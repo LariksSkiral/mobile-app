@@ -1,27 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import ProductCard from './components/ProductCard';
+import React, {useState} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import HomeScreen from './screens/HomeScreen';
+import ProductDetail from './screens/ProductDetail';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-   <View style={styles.container}>
-    <StatusBar style="auto" />
-    <ScrollView>
-      <Text>Onze Producten</Text>
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-    </ScrollView>
-    </View> 
+   <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Details" component={ProductDetail} />
+    </Stack.Navigator>
+   </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  
-});

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Pressable, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 
-const ProductCard = () => {
+const ProductCard = ({title, description, price, image, onPress}) => {
+    const navigation = useNavigation();
     return (
         <View style={styles.card}>
             <View style={styles.imageContainer}>
@@ -12,11 +14,14 @@ const ProductCard = () => {
                 resizeMode="contain"
                 />
             </View>
-            <Text>Title</Text>
-            <Text>Desc</Text>
+            <Text>{title}</Text>
+            <Text>{description}</Text>
             <View style={styles.bottomRow}>
-                <Text style={styles.title}>Price</Text>
-                <Pressable style={styles.button}>
+                <Text style={styles.title}>{price}</Text>
+                <Pressable 
+                style={styles.button} 
+                onPress={onPress}
+                >
                     <Text style={styles.buttonText}>Add to cart</Text>
                 </Pressable>
                 
