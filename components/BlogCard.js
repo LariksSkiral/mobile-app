@@ -9,7 +9,7 @@ const BlogCard = ({title, description, image, onPress}) => {
         <View style={styles.card}>
             <View style={styles.imageContainer}>
                 <Image
-                source={{ uri: 'https://cdn.prod.website-files.com/69a1b56f48f05c1e9552e901/69a855941fc6c0a8a82528e3_1f0de9b2-8edf-4190-ae14-d4dded1f52db_720x.webp' }}
+                source={{ uri: image.uri }}
                 style={styles.image}
                 resizeMode="contain"
                 />

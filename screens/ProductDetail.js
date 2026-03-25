@@ -24,7 +24,7 @@ const ProductDetail = ({route}) => {
         <View style={styles.detailsContainer}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.description}>{description}</Text>
-            <Text style={styles.price}>{price}</Text>
+            <Text style={styles.price}>€{price}</Text>
         </View>
 
         <View style={styles.quantityContainer}>
@@ -40,7 +40,7 @@ const ProductDetail = ({route}) => {
                     <Text style={styles.buttonText}>+</Text>
                 </Pressable>
 
-                <Text style={styles.totalPrice}>Total: €{(quantity * parseFloat(price.replace('€', ''))).toFixed(2)}</Text>
+                <Text style={styles.totalPrice}>Total: €{(quantity * parseFloat(price)).toFixed(2)}</Text>
             </View>
         </View>
     </ScrollView>
