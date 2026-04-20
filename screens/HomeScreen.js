@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TextInput, TouchableOpacity, Switch, Button } from 'react-native';
 import ProductCard from '../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
 import BlogCard from '../components/BlogCard';
@@ -25,6 +25,15 @@ const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("price-asc");
   const [activeTab, setActiveTab] = useState("products");
+  const [showFeatured, setShowFeatured] = useState(false);
+
+  const resetFilters = () => {
+    setSearchQuery("");
+    setSelectedCategory("");
+    setSortOption("price-asc");
+  };
+
+  const filteredBlogs = blogs.filter(b => !showFeatured || b.featured === true);
 
   useEffect(() => {
     // Fetch products and blogs
@@ -58,15 +67,18 @@ const HomeScreen = () => {
       },
       )
         .then((response) => response.json())
-        .then((data) => setBlogs(
-          data.items.map((item) => ({
+        .then((data) => {
+          console.log('Blog fieldData keys:', Object.keys(data.items[0].fieldData));
+          console.log('Blog item[0] fieldData:', JSON.stringify(data.items[0].fieldData, null, 2));
+          setBlogs(data.items.map((item) => ({
             id: item.id,
             title: item.fieldData.name,
             description: item.fieldData.summary,
             image: { uri: item.fieldData["main-image"].url },
             content: item.fieldData["post-body"],
-          }))
-        ))
+            featured: item.fieldData["is-featured"] ?? false,
+          })));
+        })
         .catch((error) => console.error('Error fetching blogs:', error));
   }, []);
 
@@ -162,6 +174,10 @@ const HomeScreen = () => {
             </View>
           </View>
 
+          <View style={styles.resetButtonContainer}>
+            <Button title="Filters wissen" onPress={resetFilters} color="orange" />
+          </View>
+
           {sortedProducts.map((product) => (
             <ProductCard
               key={product.id}
@@ -184,14 +200,23 @@ const HomeScreen = () => {
       {activeTab === "blogs" && (
         <>
           <Text style={styles.sectionTitle}>Onze Blogs</Text>
-          {blogs.map((blog) => (
+          <View style={styles.switchRow}>
+            <Text style={styles.filterLabel}>Uitgelicht</Text>
+            <Switch
+              value={showFeatured}
+              onValueChange={setShowFeatured}
+              trackColor={{ false: '#f0f0f0', true: 'orange' }}
+              thumbColor={showFeatured ? '#fff' : '#ccc'}
+            />
+          </View>
+          {filteredBlogs.map((blog) => (
             <BlogCard
               key={blog.id}
               title={blog.title}
               description={blog.description}
               image={blog.image}
               onPress={() =>
-                navigation.navigate('BlogDetail', {
+                  navigation.navigate('BlogDetail', {
                   title: blog.title,
                   description: blog.description,
                   content: blog.content,
@@ -278,6 +303,18 @@ const styles = StyleSheet.create({
     },
     picker: {
         height: 50,
+    },
+    resetButtonContainer: {
+        marginHorizontal: 16,
+        marginBottom: 16,
+    },
+    switchRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginHorizontal: 16,
+        marginBottom: 12,
+        marginTop: 4,
     },
     tabBar: {
         flexDirection: 'row',
