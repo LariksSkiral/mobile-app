@@ -27,14 +27,14 @@ const ProductCard = ({title, description, price, image, onPress}) => {
                 />
             </View>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={styles.description} numberOfLines={4} ellipsizeMode="tail">{description}</Text>
             <View style={styles.bottomRow}>
                 <Text style={styles.title}>{price}</Text>
                 <Pressable 
                 style={styles.button} 
                 onPress={onPress}
                 >
-                    <Text style={styles.buttonText}>Add to cart</Text>
+                    <Text style={styles.buttonText}>View more</Text>
                 </Pressable>
                 
         </View>

@@ -54,7 +54,7 @@ const HomeScreen = () => {
           description: item.product.fieldData.description,
           price: item.skus[0].fieldData.price.value / 100, // 3199 = $31.99          
           image: { uri: item.skus[0].fieldData["main-image"].url },
-          category: categoryNames [item.product.fieldData.category[0]] || "Onbekende categorie",
+          category: categoryNames [item.product.fieldData.category[0]] || "Unknown category",
         })),
       ))
       .catch((error) => console.error('Error fetching products:', error));
@@ -109,7 +109,7 @@ const HomeScreen = () => {
         onPress={() => setActiveTab("products")}
       >
         <Text style={[styles.tabButtonText, activeTab === "products" && styles.tabButtonTextActive]}>
-          Producten
+          Products
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -125,20 +125,20 @@ const HomeScreen = () => {
     <ScrollView>
       {activeTab === "products" && (
         <>
-          <Text style={styles.sectionTitle}>Onze Producten</Text>
+          <Text style={styles.sectionTitle}>Our Products</Text>
 
           <TextInput
-            placeholder="Zoek producten..."
+            placeholder="Search products..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             style={styles.searchInput}
           />
 
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Categorie</Text>
+            <Text style={styles.filterLabel}>Category</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
               {[
-                { label: "Alles", value: "" },
+                { label: "All", value: "" },
                 { label: "Action", value: "Action" },
                 { label: "Social & Party", value: "Social & Party" },
                 { label: "Family & Children", value: "Family & Children" },
@@ -159,23 +159,23 @@ const HomeScreen = () => {
           </View>
 
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Sorteren</Text>
+            <Text style={styles.filterLabel}>Sort</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={sortOption}
                 onValueChange={setSortOption}
                 style={styles.picker}
               >
-                <Picker.Item label="Prijs: Laag naar Hoog" value="price-asc" />
-                <Picker.Item label="Prijs: Hoog naar Laag" value="price-desc" />
-                <Picker.Item label="Titel: A tot Z" value="title-asc" />
-                <Picker.Item label="Titel: Z tot A" value="title-desc" />
+                <Picker.Item label="Price: Low to High" value="price-asc" />
+                <Picker.Item label="Price: High to Low" value="price-desc" />
+                <Picker.Item label="Title: A to Z" value="title-asc" />
+                <Picker.Item label="Title: Z to A" value="title-desc" />
               </Picker>
             </View>
           </View>
 
           <View style={styles.resetButtonContainer}>
-            <Button title="Filters wissen" onPress={resetFilters} color="orange" />
+            <Button title="Clear filters" onPress={resetFilters} color="orange" />
           </View>
 
           {sortedProducts.map((product) => (
@@ -199,9 +199,9 @@ const HomeScreen = () => {
 
       {activeTab === "blogs" && (
         <>
-          <Text style={styles.sectionTitle}>Onze Blogs</Text>
+          <Text style={styles.sectionTitle}>Our Blogs</Text>
           <View style={styles.switchRow}>
-            <Text style={styles.filterLabel}>Uitgelicht</Text>
+            <Text style={styles.filterLabel}>Featured</Text>
             <Switch
               value={showFeatured}
               onValueChange={setShowFeatured}

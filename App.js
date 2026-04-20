@@ -39,7 +39,7 @@ if (!fontsLoaded) return null;
     <Stack.Navigator>
       <Stack.Screen name="GameNight" component={HomeScreen} options={HeaderOptions}/>
       <Stack.Screen name="Details" component={ProductDetail} options={HeaderOptions} />
-      <Stack.Screen name="BlogDetail" component={BlogDetail} options={HeaderOptions}/>
+      <Stack.Screen name="BlogDetail" component={BlogDetail} options={{...HeaderOptions, title: 'Details'}}/>
     </Stack.Navigator>
    </NavigationContainer>
   );

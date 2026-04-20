@@ -30,7 +30,7 @@ const BlogCard = ({title, description, image, onPress}) => {
                 style={styles.button}
                 onPress={onPress}
                 >
-                    <Text style={styles.buttonText}>Lees meer</Text>
+                    <Text style={styles.buttonText}>Read more</Text>
                 </Pressable>
             </View>
         </View>

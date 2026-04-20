@@ -32,7 +32,7 @@ const ProductDetail = ({route}) => {
                     <Text style={styles.description}>{description}</Text>
 
                     <View style={styles.priceRow}>
-                        <Text style={styles.priceLabel}>Prijs</Text>
+                        <Text style={styles.priceLabel}>Price</Text>
                         <View style={styles.priceBadge}>
                             <Text style={styles.priceValue}>€{parseFloat(price).toFixed(2)}</Text>
                         </View>
@@ -40,7 +40,7 @@ const ProductDetail = ({route}) => {
 
                     <View style={styles.divider} />
 
-                    <Text style={styles.sectionLabel}>Aantal</Text>
+                    <Text style={styles.sectionLabel}>Quantity</Text>
                     <View style={styles.quantityRow}>
                         <Pressable onPress={decreaseQuantity} style={styles.quantityButton}>
                             <Text style={styles.quantityButtonText}>−</Text>
@@ -51,13 +51,13 @@ const ProductDetail = ({route}) => {
                         </Pressable>
 
                         <View style={styles.totalContainer}>
-                            <Text style={styles.totalLabel}>Totaal</Text>
+                            <Text style={styles.totalLabel}>Total</Text>
                             <Text style={styles.totalValue}>€{(quantity * parseFloat(price)).toFixed(2)}</Text>
                         </View>
                     </View>
 
                     <Pressable style={styles.cartButton}>
-                        <Text style={styles.cartButtonText}>In winkelwagen</Text>
+                        <Text style={styles.cartButtonText}>Add to cart</Text>
                     </Pressable>
                 </View>
             </ScrollView>
