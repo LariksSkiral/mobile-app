@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
 import ProductCard from '../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
 import BlogCard from '../components/BlogCard';
 import { useState, useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
+import { useFonts, Fredoka_400Regular, Fredoka_700Bold } from '@expo-google-fonts/fredoka';
 
 const categoryNames = {
   "": "All",
@@ -23,6 +24,7 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("price-asc");
+  const [activeTab, setActiveTab] = useState("products");
 
   useEffect(() => {
     // Fetch products and blogs
@@ -82,86 +84,107 @@ const HomeScreen = () => {
     return 0;
   });
 
+
+
   return (
    <View style={styles.container}>
     <StatusBar style="auto" />
+
+    <View style={styles.tabBar}>
+      <TouchableOpacity
+        style={[styles.tabButton, activeTab === "products" && styles.tabButtonActive]}
+        onPress={() => setActiveTab("products")}
+      >
+        <Text style={[styles.tabButtonText, activeTab === "products" && styles.tabButtonTextActive]}>
+          Producten
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.tabButton, activeTab === "blogs" && styles.tabButtonActive]}
+        onPress={() => setActiveTab("blogs")}
+      >
+        <Text style={[styles.tabButtonText, activeTab === "blogs" && styles.tabButtonTextActive]}>
+          Blogs
+        </Text>
+      </TouchableOpacity>
+    </View>
+
     <ScrollView>
-      <Text style={styles.sectionTitle}>Onze Producten</Text>
+      {activeTab === "products" && (
+        <>
+          <Text style={styles.sectionTitle}>Onze Producten</Text>
 
-      <TextInput
-        placeholder="Zoek producten..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        style={styles.searchInput}
-      />  
+          <TextInput
+            placeholder="Zoek producten..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            style={styles.searchInput}
+          />
 
-      <Picker
-        selectedValue={selectedCategory}
-        onValueChange={setSelectedCategory}
-        style={{ height: 50, width: 200, marginLeft: 20 }}
-      > 
-      <Picker.Item label="All" value="" />
-      <Picker.Item label="Action" value="Action" />
-      <Picker.Item label="Social & Party" value="Social & Party" />
-      <Picker.Item label="Family & Children" value="Family & Children" />
-      <Picker.Item label="Adult" value="Adult" />
-      <Picker.Item label="Strategy" value="Strategy" />
-      </Picker>
+          <Picker
+            selectedValue={selectedCategory}
+            onValueChange={setSelectedCategory}
+            style={{ height: 50, width: 200, marginLeft: 20 }}
+          >
+            <Picker.Item label="All" value="" />
+            <Picker.Item label="Action" value="Action" />
+            <Picker.Item label="Social & Party" value="Social & Party" />
+            <Picker.Item label="Family & Children" value="Family & Children" />
+            <Picker.Item label="Adult" value="Adult" />
+            <Picker.Item label="Strategy" value="Strategy" />
+          </Picker>
 
+          <Picker
+            selectedValue={sortOption}
+            onValueChange={setSortOption}
+            style={{ height: 50, width: 200, marginLeft: 20 }}
+          >
+            <Picker.Item label="Price: Low to High" value="price-asc" />
+            <Picker.Item label="Price: High to Low" value="price-desc" />
+            <Picker.Item label="Title: A to Z" value="title-asc" />
+            <Picker.Item label="Title: Z to A" value="title-desc" />
+          </Picker>
 
-      <Picker
-        selectedValue={sortOption}
-        onValueChange={setSortOption}
-        style={{ height: 50, width: 200, marginLeft: 20 }}
-      > 
-      <Picker.Item label="Price: Low to High" value="price-asc" />
-      <Picker.Item label="Price: High to Low" value="price-desc" />
-      <Picker.Item label="Title: A to Z" value="title-asc" />
-      <Picker.Item label="Title: Z to A" value="title-desc" />
-      </Picker>
-      
-      {sortedProducts.map((product) => (
-        <ProductCard 
-          key={product.id}
-          title={product.title}
-          description={product.description}
-          price={product.price}
-          image={product.image}
-          onPress={() => 
-            navigation.navigate('Details', {
-                title: product.title,
-                description: product.description,
-                price: product.price,
-                image: product.image,
-            })}
-        />
-      ))}
-      
-      
-      
-      
-      
-     
+          {sortedProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              title={product.title}
+              description={product.description}
+              price={product.price}
+              image={product.image}
+              onPress={() =>
+                navigation.navigate('Details', {
+                  title: product.title,
+                  description: product.description,
+                  price: product.price,
+                  image: product.image,
+                })}
+            />
+          ))}
+        </>
+      )}
 
-      <Text style={styles.sectionTitle}>Onze Blogs</Text>
-      {blogs.map((blog) => (
-        <BlogCard 
-          key={blog.id}
-          title={blog.title}
-          description={blog.description}
-          image={blog.image}
-          onPress={() => 
-            navigation.navigate('BlogDetail', {
-                title: blog.title,
-                description: blog.description, 
-                image: blog.image })}
-        />
-      ))}
-
-
-      
+      {activeTab === "blogs" && (
+        <>
+          <Text style={styles.sectionTitle}>Onze Blogs</Text>
+          {blogs.map((blog) => (
+            <BlogCard
+              key={blog.id}
+              title={blog.title}
+              description={blog.description}
+              image={blog.image}
+              onPress={() =>
+                navigation.navigate('BlogDetail', {
+                  title: blog.title,
+                  description: blog.description,
+                  image: blog.image,
+                })}
+            />
+          ))}
+        </>
+      )}
     </ScrollView>
-    </View> 
+    </View>
   );
 }
 
@@ -182,11 +205,45 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 24,
-        fontWeight: 'bold',
         marginVertical: 20,
         marginLeft: 20,
+        fontFamily: 'Fredoka_700Bold',
     },
-  
+    searchInput: {
+        marginHorizontal: 16,
+        marginVertical: 8,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderRadius: 25,
+        backgroundColor: '#f2f2f2',
+        fontSize: 15,
+        fontFamily: 'Fredoka_400Regular',
+    },
+    tabBar: {
+        flexDirection: 'row',
+        margin: 16,
+        borderRadius: 12,
+        backgroundColor: '#f0f0f0',
+        padding: 4,
+    },
+    tabButton: {
+        flex: 1,
+        paddingVertical: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    tabButtonActive: {
+        backgroundColor: 'orange',
+    },
+    tabButtonText: {
+        fontSize: 16,
+        color: '#888',
+        fontFamily: 'Fredoka_700Bold',
+    },
+    tabButtonTextActive: {
+        color: '#fff',
+    },
+
 });
 
 export default HomeScreen;

@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useFonts, Fredoka_400Regular, Fredoka_700Bold } from '@expo-google-fonts/fredoka';
+import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold } from '@expo-google-fonts/nunito';
 
 
 const ProductCard = ({title, description, price, image, onPress}) => {
     const navigation = useNavigation();
+    const [fontsLoaded] = useFonts({
+        Fredoka_400Regular,
+        Fredoka_700Bold,
+        Nunito_400Regular,
+        Nunito_600SemiBold,
+        Nunito_700Bold,
+    });
+
+    if (!fontsLoaded) return null;
+
     return (
         <View style={styles.card}>
             <View style={styles.imageContainer}>
@@ -14,8 +26,8 @@ const ProductCard = ({title, description, price, image, onPress}) => {
                 resizeMode="contain"
                 />
             </View>
-            <Text>{title}</Text>
-            <Text>{description}</Text>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.description}>{description}</Text>
             <View style={styles.bottomRow}>
                 <Text style={styles.title}>{price}</Text>
                 <Pressable 
@@ -56,9 +68,10 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 22,
-        fontWeight: 'bold',
         color: '#111',
         marginBottom: 10,
+        fontFamily: 'Fredoka_700Bold',
+        
 
     },
     description: {
@@ -66,6 +79,7 @@ const styles = StyleSheet.create({
         color: '#999',
         marginBottom: 24,
         lineHeight: 22,
+        fontFamily: 'Nunito_400Regular',
     },
     price: {
         fontSize: 20,
