@@ -64,6 +64,7 @@ const HomeScreen = () => {
             title: item.fieldData.name,
             description: item.fieldData.summary,
             image: { uri: item.fieldData["main-image"].url },
+            content: item.fieldData["post-body"],
           }))
         ))
         .catch((error) => console.error('Error fetching blogs:', error));
@@ -121,29 +122,45 @@ const HomeScreen = () => {
             style={styles.searchInput}
           />
 
-          <Picker
-            selectedValue={selectedCategory}
-            onValueChange={setSelectedCategory}
-            style={{ height: 50, width: 200, marginLeft: 20 }}
-          >
-            <Picker.Item label="All" value="" />
-            <Picker.Item label="Action" value="Action" />
-            <Picker.Item label="Social & Party" value="Social & Party" />
-            <Picker.Item label="Family & Children" value="Family & Children" />
-            <Picker.Item label="Adult" value="Adult" />
-            <Picker.Item label="Strategy" value="Strategy" />
-          </Picker>
+          <View style={styles.filterSection}>
+            <Text style={styles.filterLabel}>Categorie</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
+              {[
+                { label: "Alles", value: "" },
+                { label: "Action", value: "Action" },
+                { label: "Social & Party", value: "Social & Party" },
+                { label: "Family & Children", value: "Family & Children" },
+                { label: "Adult", value: "Adult" },
+                { label: "Strategy", value: "Strategy" },
+              ].map((cat) => (
+                <TouchableOpacity
+                  key={cat.value}
+                  style={[styles.chip, selectedCategory === cat.value && styles.chipActive]}
+                  onPress={() => setSelectedCategory(cat.value)}
+                >
+                  <Text style={[styles.chipText, selectedCategory === cat.value && styles.chipTextActive]}>
+                    {cat.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
 
-          <Picker
-            selectedValue={sortOption}
-            onValueChange={setSortOption}
-            style={{ height: 50, width: 200, marginLeft: 20 }}
-          >
-            <Picker.Item label="Price: Low to High" value="price-asc" />
-            <Picker.Item label="Price: High to Low" value="price-desc" />
-            <Picker.Item label="Title: A to Z" value="title-asc" />
-            <Picker.Item label="Title: Z to A" value="title-desc" />
-          </Picker>
+          <View style={styles.filterSection}>
+            <Text style={styles.filterLabel}>Sorteren</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={sortOption}
+                onValueChange={setSortOption}
+                style={styles.picker}
+              >
+                <Picker.Item label="Prijs: Laag naar Hoog" value="price-asc" />
+                <Picker.Item label="Prijs: Hoog naar Laag" value="price-desc" />
+                <Picker.Item label="Titel: A tot Z" value="title-asc" />
+                <Picker.Item label="Titel: Z tot A" value="title-desc" />
+              </Picker>
+            </View>
+          </View>
 
           {sortedProducts.map((product) => (
             <ProductCard
@@ -177,6 +194,7 @@ const HomeScreen = () => {
                 navigation.navigate('BlogDetail', {
                   title: blog.title,
                   description: blog.description,
+                  content: blog.content,
                   image: blog.image,
                 })}
             />
@@ -218,6 +236,48 @@ const styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
         fontSize: 15,
         fontFamily: 'Fredoka_400Regular',
+    },
+    filterSection: {
+        marginHorizontal: 16,
+        marginBottom: 12,
+    },
+    filterLabel: {
+        fontSize: 13,
+        color: '#888',
+        fontFamily: 'Fredoka_700Bold',
+        marginBottom: 6,
+        marginLeft: 4,
+    },
+    chipRow: {
+        flexDirection: 'row',
+        gap: 8,
+        paddingRight: 8,
+    },
+    chip: {
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderRadius: 20,
+        backgroundColor: '#f2f2f2',
+    },
+    chipActive: {
+        backgroundColor: 'orange',
+    },
+    chipText: {
+        fontSize: 14,
+        color: '#555',
+        fontFamily: 'Fredoka_400Regular',
+    },
+    chipTextActive: {
+        color: '#fff',
+        fontFamily: 'Fredoka_700Bold',
+    },
+    pickerContainer: {
+        backgroundColor: '#f2f2f2',
+        borderRadius: 12,
+        overflow: 'hidden',
+    },
+    picker: {
+        height: 50,
     },
     tabBar: {
         flexDirection: 'row',

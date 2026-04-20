@@ -1,40 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useFonts, Fredoka_400Regular, Fredoka_700Bold } from '@expo-google-fonts/fredoka';
+import { Nunito_400Regular } from '@expo-google-fonts/nunito';
 
 
 const BlogCard = ({title, description, image, onPress}) => {
     const navigation = useNavigation();
+    const [fontsLoaded] = useFonts({
+        Fredoka_400Regular,
+        Fredoka_700Bold,
+        Nunito_400Regular,
+    });
+
+    if (!fontsLoaded) return null;
+
     return (
         <View style={styles.card}>
             <View style={styles.imageContainer}>
                 <Image
                 source={{ uri: image.uri }}
                 style={styles.image}
-                resizeMode="contain"
+                resizeMode="cover"
                 />
             </View>
-            <Text>{title}</Text>
-            <Text>{description}</Text>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.description}>{description}</Text>
             <View style={styles.bottomRow}>
-                <Pressable 
-                style={styles.button} 
+                <Pressable
+                style={styles.button}
                 onPress={onPress}
                 >
-                    <Text style={styles.buttonText}>Read more</Text>
+                    <Text style={styles.buttonText}>Lees meer</Text>
                 </Pressable>
-                
+            </View>
         </View>
-        </View>
-    
     );
 }
+
 const styles = StyleSheet.create({
     button: {
         backgroundColor: 'orange',
         paddingVertical: 12,
         paddingHorizontal: 24,
         borderRadius: 8,
+        alignItems: 'center',
     },
     buttonText: {
         color: 'white',
@@ -50,25 +59,20 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.08,
         shadowRadius: 10,
-        elevation: 4,              // Android shadow
+        elevation: 4,
     },
     title: {
         fontSize: 22,
-        fontWeight: 'bold',
         color: '#111',
         marginBottom: 10,
-
+        fontFamily: 'Fredoka_700Bold',
     },
     description: {
         fontSize: 14,
         color: '#999',
         marginBottom: 24,
         lineHeight: 22,
-    },
-    price: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#111',
+        fontFamily: 'Nunito_400Regular',
     },
     bottomRow: {
         flexDirection: 'row',
@@ -76,14 +80,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     imageContainer: {
-        alignItems: 'center',
         marginBottom: 20,
         height: 200,
-        justifyContent: 'center',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        overflow: 'hidden',
+        marginHorizontal: -20,
+        marginTop: -20,
     },
     image: {
-        width: 150,
-        height: 150,
+        width: '100%',
+        height: '100%',
     },
 })
 
